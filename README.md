@@ -111,7 +111,7 @@ The following inputs can be used in `step.with`:
 <!-- start usage -->
 
 ```yaml
-- uses: neuvector/scan-action@main
+- uses: pohanhuangtw/scan-action@main
   with:
     # Registry of the image to scan, e.g. `https://registry.organization.com/`
     # Default:
