@@ -1,5 +1,12 @@
-name: "build"
-on: [push, pull_request]
+name: "release"
+on: 
+  push:
+    tags: 
+      - 'v*'
+
+env:
+  TAG: ${{ github.ref_name }}
+
 jobs:
   build:
     name: build
@@ -31,3 +38,17 @@ jobs:
 
       - name: Run tests
         run: bats test
+
+  release:
+      name: Draft GitHub Release
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check out code
+          uses: actions/checkout@v4
+
+        - name: Create GitHub Release
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run: |
+            gh release create ${{ env.TAG }} --draft --notes "Automated release of version ${{ env.TAG }}"
